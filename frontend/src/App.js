@@ -1,4 +1,3 @@
-// filepath: /d:/React/evaleasy-frontend/frontend/src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -8,6 +7,9 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import RepresentativeDashboard from './components/Representative/RepresentativeDashboard';
 import InstructorDashboard from './components/Instructor/InstructorDashboard';
 import InstitutionDetails from './components/Admin/InstitutionDetails';
+import SubjectDetails from './components/Instructor/SubjectDetails';
+import QuestionPoolDetails from './components/Instructor/QuestionPoolDetails';
+import TestDetails from './components/Instructor/TestDetails';
 import PrivateRoute from './components/PrivateRoute';
 import RedirectHandler from './components/RedirectHandler';
 
@@ -48,6 +50,30 @@ function App() {
             element={
               <PrivateRoute allowedRoles={['admin']}>
                 <InstitutionDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/subject/:id"
+            element={
+              <PrivateRoute allowedRoles={['instructor']}>
+                <SubjectDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/question-pool/:id"
+            element={
+              <PrivateRoute allowedRoles={['instructor']}>
+                <QuestionPoolDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/test/:id"
+            element={
+              <PrivateRoute allowedRoles={['instructor']}>
+                <TestDetails />
               </PrivateRoute>
             }
           />

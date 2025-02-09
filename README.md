@@ -6,8 +6,6 @@ This is the frontend application for EvalEasy, a platform for managing instituti
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Endpoints](#endpoints)
-- [Project Structure](#project-structure)
 - [Features](#features)
 
 ## Installation
@@ -50,26 +48,6 @@ npm run build
 
 Access the API at `http://localhost:3000/`
 
-## Endpoints
-
-- **Authentication**
-    - `POST /api/auth/login/`: Log in a user.
-
-- **Institutions**
-    - `GET /api/auth/institutions/`: List all institutions.
-    - `POST /api/auth/create/institution/`: Create a new institution.
-
-- **Representatives**
-    - `POST /api/auth/create/representative/`: Create a new representative.
-    - `GET /api/auth/users/representatives/?institution_id=<institution_id>`: List representatives by institution ID.
-
-- **Instructors**
-    - `POST /api/auth/create/instructor/`: Create a new instructor.
-    - `GET /api/auth/users/instructors/?institution_id=<institution_id>`: List instructors by institution ID.
-
-- **Subjects**
-    - `GET /api/test/subjects/list/`: List all subjects.
-    - `POST /api/test/subjects/`: Create a new subject.
 
 ## Features
 
@@ -78,3 +56,7 @@ Access the API at `http://localhost:3000/`
 - **Institution Management:** Admins can create and view institutions.
 - **Representative Management:** Admins can create representatives for institutions.
 - **Instructor Management:** Representatives can create instructors for their institution.
+- **Subject Management:** Instructors can create and view subjects.
+- **Question Pool Management:** Instructors can create and view question pools for subjects.
+- **Question Management:** Instructors can create questions with nested answers.
+- **Test Management:** Instructors can generate tests, view test details, and download test files.

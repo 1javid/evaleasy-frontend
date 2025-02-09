@@ -1,4 +1,3 @@
-// filepath: /d:/React/evaleasy-frontend/frontend/src/components/Auth/Login.js
 import React, { useState, useContext } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
