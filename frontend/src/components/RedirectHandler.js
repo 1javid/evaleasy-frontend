@@ -15,7 +15,7 @@ const RedirectHandler = () => {
             const userType = auth.user_type.toLowerCase();
             const currentPath = location.pathname;
 
-            if (userType === 'admin' && currentPath !== '/admin') {
+            if (userType === 'admin' && currentPath !== '/admin' && !currentPath.startsWith('/institution/')) {
                 navigate('/admin');
             } else if (userType === 'institution representative' && currentPath !== '/representative') {
                 navigate('/representative');

@@ -1,12 +1,15 @@
-// filepath: /d:/React/evaleasy-frontend/frontend/src/components/Shared/Navbar.js
+// filepath: /frontend/src/components/Shared/Navbar.js
 import React, { useContext } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
     const { auth, logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleLogout = () => {
         logout();
@@ -17,32 +20,33 @@ const Navbar = () => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    EvalEasy
+                    SmartEval
                 </Typography>
+                <LanguageSwitcher />
                 {auth ? (
                     <Box>
                         {auth.user_type.toLowerCase() === 'admin' && (
                             <Button color="inherit" component={Link} to="/admin">
-                                Admin Dashboard
+                                {t('admin_dashboard')}
                             </Button>
                         )}
                         {auth.user_type.toLowerCase() === 'institution representative' && (
                             <Button color="inherit" component={Link} to="/representative">
-                                Representative Dashboard
+                                {t('representative_dashboard')}
                             </Button>
                         )}
                         {auth.user_type.toLowerCase() === 'instructor' && (
                             <Button color="inherit" component={Link} to="/instructor">
-                                Instructor Dashboard
+                                {t('instructor_dashboard')}
                             </Button>
                         )}
                         <Button color="inherit" onClick={handleLogout}>
-                            Logout
+                            {t('logout')}
                         </Button>
                     </Box>
                 ) : (
                     <Button color="inherit" component={Link} to="/login">
-                        Login
+                        {t('login')}
                     </Button>
                 )}
             </Toolbar>

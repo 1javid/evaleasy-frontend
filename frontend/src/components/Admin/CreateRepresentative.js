@@ -1,7 +1,7 @@
-// filepath: /d:/React/evaleasy-frontend/frontend/src/components/Admin/CreateRepresentative.js
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { createRepresentative } from '../../services/authService';
+import { useTranslation } from 'react-i18next';
 
 const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
     const [first_name, setFirstName] = useState('');
@@ -9,6 +9,7 @@ const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
 
     const handleCreate = async (e) => {
         e.preventDefault();
@@ -20,10 +21,10 @@ const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
             setEmail('');
             setPassword('');
             setError(null);
-            alert('Representative created successfully!');
+            alert(t('representative_created_successfully'));
             onRepresentativeCreated(response.data);
         } catch (err) {
-            setError(err.response?.data || 'Failed to create representative.');
+            setError(t('failed_to_create_representative'));
         }
     };
 
@@ -31,7 +32,7 @@ const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
         <Box component="form" onSubmit={handleCreate} sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
             {error && <Typography color="error">{error}</Typography>}
             <TextField
-                label="First Name"
+                label={t('first_name')}
                 fullWidth
                 margin="normal"
                 value={first_name}
@@ -39,7 +40,7 @@ const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
                 required
             />
             <TextField
-                label="Last Name"
+                label={t('last_name')}
                 fullWidth
                 margin="normal"
                 value={last_name}
@@ -47,7 +48,7 @@ const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
                 required
             />
             <TextField
-                label="Email"
+                label={t('email')}
                 type="email"
                 fullWidth
                 margin="normal"
@@ -56,7 +57,7 @@ const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
                 required
             />
             <TextField
-                label="Password"
+                label={t('password')}
                 type="password"
                 fullWidth
                 margin="normal"
@@ -65,7 +66,7 @@ const CreateRepresentative = ({ institutionId, onRepresentativeCreated }) => {
                 required
             />
             <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-                Create Representative
+                {t('create_representative')}
             </Button>
         </Box>
     );

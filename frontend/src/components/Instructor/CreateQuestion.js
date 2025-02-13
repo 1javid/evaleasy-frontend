@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { createQuestion } from '../../services/authService';
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
     const [text, setText] = useState('');
     const [defaultScore, setDefaultScore] = useState('');
     const [answers, setAnswers] = useState([{ text: '', is_correct: false }]);
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
 
     const handleAddAnswer = () => {
         setAnswers([...answers, { text: '', is_correct: false }]);
@@ -38,10 +40,10 @@ const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
             setDefaultScore('');
             setAnswers([{ text: '', is_correct: false }]);
             setError(null);
-            alert('Question created successfully!');
+            alert(t('question_created_successfully'));
             onQuestionCreated(response.data);
         } catch (err) {
-            setError(err.response?.data || 'Failed to create question.');
+            setError(t('failed_to_create_question'));
         }
     };
 
@@ -49,7 +51,7 @@ const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
         <Box component="form" onSubmit={handleCreate} sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
             {error && <Typography color="error">{error}</Typography>}
             <TextField
-                label="Question Text"
+                label={t('question_text')}
                 fullWidth
                 margin="normal"
                 value={text}
@@ -57,7 +59,7 @@ const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
                 required
             />
             <TextField
-                label="Default Score"
+                label={t('default_score')}
                 fullWidth
                 margin="normal"
                 value={defaultScore}
@@ -65,12 +67,12 @@ const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
                 required
             />
             <Typography variant="body2" sx={{ mt: 2 }}>
-                Answers:
+                {t('answers')}:
             </Typography>
             {answers.map((answer, index) => (
                 <Box key={index} sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                     <TextField
-                        label={`Answer ${index + 1}`}
+                        label={`${t('answer')} ${index + 1}`}
                         fullWidth
                         margin="normal"
                         value={answer.text}
@@ -84,7 +86,7 @@ const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
                                 onChange={(e) => handleAnswerChange(index, 'is_correct', e.target.checked)}
                             />
                         }
-                        label="Correct"
+                        label={t('correct')}
                         sx={{ ml: 2 }}
                     />
                     <IconButton onClick={() => handleRemoveAnswer(index)} sx={{ ml: 2 }}>
@@ -93,10 +95,10 @@ const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
                 </Box>
             ))}
             <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-                Create Question
+                {t('create_question')}
             </Button>
             <Button variant="outlined" color="primary" onClick={handleAddAnswer} sx={{ mt: 2, ml: 2 }}>
-                <AddCircleOutline /> Add Answer
+                <AddCircleOutline /> {t('add_answer')}
             </Button>
         </Box>
     );

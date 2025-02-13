@@ -3,6 +3,8 @@ import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { loginUser } from '../../services/authService';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../Shared/LanguageSwitcher';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,6 +12,7 @@ const Login = () => {
     const [error, setError] = useState(null);
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -36,9 +39,10 @@ const Login = () => {
 
     return (
         <Box component="form" onSubmit={handleLogin} sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
+            <LanguageSwitcher />
             {error && <Typography color="error">{error}</Typography>}
             <TextField
-                label="Email"
+                label={t('email')}
                 type="email"
                 fullWidth
                 margin="normal"
@@ -47,7 +51,7 @@ const Login = () => {
                 required
             />
             <TextField
-                label="Password"
+                label={t('password')}
                 type="password"
                 fullWidth
                 margin="normal"
@@ -56,7 +60,7 @@ const Login = () => {
                 required
             />
             <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-                Login
+                {t('login')}
             </Button>
         </Box>
     );

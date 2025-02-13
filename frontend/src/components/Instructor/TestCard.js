@@ -2,9 +2,11 @@ import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const TestCard = ({ testGroup }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleCardClick = (assessmentId) => {
         navigate(`/test/${assessmentId}`);
@@ -23,7 +25,7 @@ const TestCard = ({ testGroup }) => {
             link.click();
             document.body.removeChild(link);
         } catch (err) {
-            console.error('Failed to download tests:', err);
+            console.error(t('failed_to_download_tests'), err);
         }
     };
 
@@ -38,13 +40,13 @@ const TestCard = ({ testGroup }) => {
             <CardContent>
                 <Typography variant="h6">{testGroup.name}</Typography>
                 <Typography variant="body2" color="textSecondary">
-                    Variants: {sortedVariants.map(v => v.variant).join(', ')}
+                    {t('variants')}: {sortedVariants.map(v => v.variant).join(', ')}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                    Group ID: {testGroup.group_id}
+                    {t('group_id')}: {testGroup.group_id}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" onClick={handleDownloadClick} sx={{ cursor: 'pointer', textDecoration: 'underline' }}>
-                    Download Test Variants
+                    {t('download_test_variants')}
                 </Typography>
                 {sortedVariants.map(({ variant, assessmentId }) => (
                     <Typography
@@ -54,7 +56,7 @@ const TestCard = ({ testGroup }) => {
                         onClick={() => handleCardClick(assessmentId)}
                         sx={{ cursor: 'pointer', mt: 1, textDecoration: 'underline' }}
                     >
-                        View Variant {variant}
+                        {t('view_variant')} {variant}
                     </Typography>
                 ))}
             </CardContent>

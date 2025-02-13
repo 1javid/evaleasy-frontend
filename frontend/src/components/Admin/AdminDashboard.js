@@ -1,12 +1,14 @@
-// filepath: /d:/React/evaleasy-frontend/frontend/src/components/Admin/AdminDashboard.js
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, Grid } from '@mui/material';
 import CreateInstitution from './CreateInstitution';
 import InstitutionCard from './InstitutionCard';
 import { listInstitutions } from '../../services/authService';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../Shared/LanguageSwitcher';
 
 const AdminDashboard = () => {
     const [institutions, setInstitutions] = useState([]);
+    const { t } = useTranslation();
 
     // Fetch existing institutions when the component mounts
     useEffect(() => {
@@ -15,12 +17,12 @@ const AdminDashboard = () => {
                 const response = await listInstitutions();
                 setInstitutions(response.data);
             } catch (err) {
-                console.error('Failed to fetch institutions', err);
+                console.error(t('failed_to_fetch_institutions'), err);
             }
         };
 
         fetchInstitutions();
-    }, []);
+    }, [t]);
 
     // Callback when a new institution is created
     const handleInstitutionCreated = (institution) => {
@@ -29,12 +31,15 @@ const AdminDashboard = () => {
 
     return (
         <Container>
-            <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-                Admin Dashboard
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 4, mb: 2 }}>
+                <Typography variant="h4">
+                    {t('admin_dashboard')}
+                </Typography>
+                <LanguageSwitcher />
+            </Box>
             <CreateInstitution onInstitutionCreated={handleInstitutionCreated} />
             <Typography variant="h5" sx={{ mt: 4 }}>
-                Institutions
+                {t('institutions')}
             </Typography>
             <Grid container spacing={2} sx={{ mt: 2 }}>
                 {institutions.map((inst) => (

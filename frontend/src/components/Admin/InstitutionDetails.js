@@ -1,13 +1,15 @@
-// filepath: /d:/React/evaleasy-frontend/frontend/src/components/Admin/InstitutionDetails.js
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Box, Grid } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import CreateRepresentative from './CreateRepresentative';
 import { listRepresentativesByInstitution } from '../../services/authService';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../Shared/LanguageSwitcher';
 
 const InstitutionDetails = () => {
     const { id } = useParams();
     const [representatives, setRepresentatives] = useState([]);
+    const { t } = useTranslation();
 
     // Fetch existing representatives when the component mounts
     useEffect(() => {
@@ -16,12 +18,12 @@ const InstitutionDetails = () => {
                 const response = await listRepresentativesByInstitution(id);
                 setRepresentatives(response.data);
             } catch (err) {
-                console.error('Failed to fetch representatives', err);
+                console.error(t('failed_to_fetch_representatives'), err);
             }
         };
 
         fetchRepresentatives();
-    }, [id]);
+    }, [id, t]);
 
     // Callback when a new representative is created
     const handleRepresentativeCreated = (representative) => {
@@ -30,25 +32,28 @@ const InstitutionDetails = () => {
 
     return (
         <Container>
-            <Typography variant="h4" sx={{ mt: 4 }}>
-                Institution Details
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 4, mb: 2 }}>
+                <Typography variant="h4">
+                    {t('institution_details')}
+                </Typography>
+                <LanguageSwitcher />
+            </Box>
             <Typography variant="h6" sx={{ mt: 2 }}>
-                Institution ID: {id}
+                {t('institution_id')}: {id}
             </Typography>
             <Box sx={{ mt: 4 }}>
-                <Typography variant="h6">Create Representative</Typography>
+                <Typography variant="h6">{t('create_representative')}</Typography>
                 <CreateRepresentative institutionId={id} onRepresentativeCreated={handleRepresentativeCreated} />
             </Box>
             <Typography variant="h5" sx={{ mt: 4 }}>
-                Representatives
+                {t('representatives')}
             </Typography>
             <Grid container spacing={2} sx={{ mt: 2 }}>
                 {representatives.map((rep) => (
                     <Grid item xs={12} sm={6} md={4} key={rep.user_id}>
                         <Box sx={{ border: '1px solid #ccc', p: 2, borderRadius: 2 }}>
                             <Typography variant="h6">{rep.first_name} {rep.last_name}</Typography>
-                            <Typography variant="body2">Email: {rep.email}</Typography>
+                            <Typography variant="body2">{t('email')}: {rep.email}</Typography>
                         </Box>
                     </Grid>
                 ))}

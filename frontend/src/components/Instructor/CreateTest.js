@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Box, TextField, Button, Typography, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { createTest, listQuestionPoolsBySubject } from '../../services/authService';
 import { AuthContext } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const CreateTest = ({ subjectId, onTestCreated }) => {
     const { auth } = useContext(AuthContext);
@@ -12,6 +13,7 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
     const [questionSelections, setQuestionSelections] = useState([{ question_pool: '', positions: '' }]);
     const [questionPools, setQuestionPools] = useState([]);
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchQuestionPools = async () => {
@@ -19,12 +21,12 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
                 const response = await listQuestionPoolsBySubject(subjectId);
                 setQuestionPools(response.data);
             } catch (err) {
-                setError(err.response?.data || 'Failed to fetch question pools.');
+                setError(err.response?.data || t('failed_to_fetch_question_pools'));
             }
         };
 
         fetchQuestionPools();
-    }, [subjectId]);
+    }, [subjectId, t]);
 
     const handleCreate = async (e) => {
         e.preventDefault();
@@ -48,10 +50,10 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
             setVariants(['A']);
             setQuestionSelections([{ question_pool: '', positions: '' }]);
             setError(null);
-            alert('Test created successfully!');
+            alert(t('test_created_successfully'));
             onTestCreated(response.data);
         } catch (err) {
-            setError(err.response?.data || 'Failed to create test.');
+            setError(err.response?.data || t('failed_to_create_test'));
         }
     };
 
@@ -73,7 +75,7 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
         <Box component="form" onSubmit={handleCreate} sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
             {error && <Typography color="error">{error}</Typography>}
             <TextField
-                label="Test Name"
+                label={t('test_name')}
                 fullWidth
                 margin="normal"
                 value={name}
@@ -81,21 +83,21 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
                 required
             />
             <TextField
-                label="Notes"
+                label={t('notes')}
                 fullWidth
                 margin="normal"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
             />
             <TextField
-                label="Instructions"
+                label={t('instructions')}
                 fullWidth
                 margin="normal"
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
             />
             <Typography variant="body2" sx={{ mt: 2 }}>
-                Variants:
+                {t('variants')}:
             </Typography>
             {variants.map((variant, index) => (
                 <Typography key={index} variant="body2" sx={{ mt: 1 }}>
@@ -103,15 +105,15 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
                 </Typography>
             ))}
             <Button variant="outlined" color="primary" onClick={addVariant} sx={{ mt: 2 }}>
-                Add Variant
+                {t('add_variant')}
             </Button>
             <Typography variant="body2" sx={{ mt: 2 }}>
-                Question Selections:
+                {t('question_selections')}:
             </Typography>
             {questionSelections.map((selection, index) => (
                 <Box key={index} sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                     <FormControl fullWidth margin="normal">
-                        <InputLabel>Question Pool</InputLabel>
+                        <InputLabel>{t('question_pool')}</InputLabel>
                         <Select
                             value={selection.question_pool}
                             onChange={(e) => handleQuestionSelectionChange(index, 'question_pool', e.target.value)}
@@ -125,7 +127,7 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
                         </Select>
                     </FormControl>
                     <TextField
-                        label="Positions (comma separated)"
+                        label={t('positions')}
                         fullWidth
                         margin="normal"
                         value={selection.positions}
@@ -135,10 +137,10 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
                 </Box>
             ))}
             <Button variant="outlined" color="primary" onClick={addQuestionSelection} sx={{ mt: 2 }}>
-                Add Question Selection
+                {t('add_question_selection')}
             </Button>
-            <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-                Create Test
+            <Button variant="contained" color="primary" type="submit" sx={{ mt: 2, ml: 2 }}>
+                {t('create_test')}
             </Button>
         </Box>
     );

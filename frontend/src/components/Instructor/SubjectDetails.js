@@ -7,6 +7,8 @@ import QuestionPoolCard from './QuestionPoolCard';
 import CreateTest from './CreateTest';
 import TestCard from './TestCard';
 import AssessmentTab from './AssessmentTab';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../Shared/LanguageSwitcher';
 
 const SubjectDetails = () => {
     const { id } = useParams();
@@ -15,6 +17,7 @@ const SubjectDetails = () => {
     const [questionPools, setQuestionPools] = useState([]);
     const [tests, setTests] = useState([]);
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchSubject = async () => {
@@ -22,7 +25,7 @@ const SubjectDetails = () => {
                 const response = await getSubjectById(id);
                 setSubject(response.data);
             } catch (err) {
-                setError(err.response?.data || 'Failed to fetch subject details.');
+                setError(err.response?.data || t('failed_to_fetch_subject'));
             }
         };
 
@@ -31,33 +34,27 @@ const SubjectDetails = () => {
                 const response = await listQuestionPoolsBySubject(id);
                 setQuestionPools(response.data);
             } catch (err) {
-                setError(err.response?.data || 'Failed to fetch question pools.');
+                setError(err.response?.data || t('failed_to_fetch_question_pools'));
             }
         };
 
         const fetchTests = async () => {
             try {
                 const groupIdsResponse = await getGroupIdsBySubjectId(id);
-                console.log('Group IDs:', groupIdsResponse.data);
                 const groupIds = groupIdsResponse.data.map(group => group.group_id);
-                console.log('Group IDs Array:', groupIds);
-                const testsPromises = groupIds.map(groupId => {
-                    console.log(`Fetching tests for group ID: ${groupId}`);
-                    return getTestsByGroupId(groupId);
-                });
+                const testsPromises = groupIds.map(groupId => getTestsByGroupId(groupId));
                 const testsResponses = await Promise.all(testsPromises);
                 const testsData = testsResponses.map(response => response.data).flat();
-                console.log('Tests Data:', testsData);
                 setTests(testsData);
             } catch (err) {
-                setError(err.response?.data || 'Failed to fetch tests.');
+                setError(err.response?.data || t('failed_to_fetch_tests'));
             }
         };
 
         fetchSubject();
         fetchQuestionPools();
         fetchTests();
-    }, [id]);
+    }, [id, t]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -93,9 +90,12 @@ const SubjectDetails = () => {
 
     return (
         <Container>
-            <Typography variant="h4" sx={{ mt: 4 }}>
-                Subject Details
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 4, mb: 2 }}>
+                <Typography variant="h4">
+                    {t('subject_details')}
+                </Typography>
+                <LanguageSwitcher />
+            </Box>
             {error && <Typography color="error">{error}</Typography>}
             {subject && (
                 <>
@@ -111,9 +111,9 @@ const SubjectDetails = () => {
             )}
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 2 }}>
                 <Tabs value={value} onChange={handleChange} aria-label="subject tabs">
-                    <Tab label="Question Pool" />
-                    <Tab label="Test" />
-                    <Tab label="Assessment" />
+                    <Tab label={t('question_pool')} />
+                    <Tab label={t('test')} />
+                    <Tab label={t('assessment')} />
                 </Tabs>
             </Box>
             <Box sx={{ p: 3 }}>

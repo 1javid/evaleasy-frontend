@@ -3,6 +3,7 @@ import { Box, Button, Typography, Card, CardContent, Grid, Dialog, DialogActions
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import Webcam from 'react-webcam';
+import { useTranslation } from 'react-i18next';
 
 const AssessmentTab = () => {
     const [file, setFile] = useState(null);
@@ -10,6 +11,7 @@ const AssessmentTab = () => {
     const [error, setError] = useState(null);
     const [openCamera, setOpenCamera] = useState(false);
     const webcamRef = useRef(null);
+    const { t } = useTranslation();
 
     const onDrop = (acceptedFiles) => {
         setFile(acceptedFiles[0]);
@@ -19,7 +21,7 @@ const AssessmentTab = () => {
 
     const handleUpload = async () => {
         if (!file) {
-            setError('Please upload an answer sheet or take a photo.');
+            setError(t('please_upload_or_take_photo'));
             return;
         }
 
@@ -35,7 +37,7 @@ const AssessmentTab = () => {
             setAssessmentData(response.data);
             setError(null);
         } catch (err) {
-            setError('Failed to submit assessment.');
+            setError(t('failed_to_submit_assessment'));
         }
     };
 
@@ -70,7 +72,7 @@ const AssessmentTab = () => {
             return (
                 <Grid item xs={12} key={questionId}>
                     <Typography variant="body2" sx={{ color: isCorrect ? 'green' : 'red' }}>
-                        Question {questionId}: {userAnswer} {isCorrect ? '' : `(Correct: ${correctAnswer})`}
+                        {t('question')} {questionId}: {userAnswer} {isCorrect ? '' : `(${t('correct')}: ${correctAnswer})`}
                     </Typography>
                 </Grid>
             );
@@ -79,51 +81,53 @@ const AssessmentTab = () => {
 
     return (
         <Box sx={{ mt: 2 }}>
-            <Typography variant="h5">Submit Assessment</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h5">{t('submit_assessment')}</Typography>
+            </Box>
             <Box {...getRootProps()} sx={{ border: '1px dashed #ccc', p: 2, mt: 2, cursor: 'pointer' }}>
                 <input {...getInputProps()} />
-                <Typography>Drag & drop an answer sheet here, or click to select a file</Typography>
+                <Typography>{t('drag_drop_or_click')}</Typography>
             </Box>
             {file && (
                 <Typography variant="body2" sx={{ mt: 2 }}>
-                    Uploaded file: {file.name}
+                    {t('uploaded_file')}: {file.name}
                 </Typography>
             )}
             <Button variant="contained" color="primary" onClick={handleUpload} sx={{ mt: 2 }}>
-                Upload Answer Sheet
+                {t('upload_answer_sheet')}
             </Button>
             <Button variant="outlined" color="primary" onClick={handleTakePhoto} sx={{ mt: 2, ml: 2 }}>
-                Use Camera
+                {t('use_camera')}
             </Button>
             {error && <Typography color="error" sx={{ mt: 2 }}>{error}</Typography>}
             {assessmentData && (
                 <Card sx={{ mt: 4 }}>
                     <CardContent>
-                        <Typography variant="h6">Assessment Details</Typography>
+                        <Typography variant="h6">{t('assessment_details')}</Typography>
                         <Typography>ID: {assessmentData.id}</Typography>
-                        <Typography>Assessment ID: {assessmentData.assessment_id}</Typography>
-                        <Typography>Student ID: {assessmentData.student_id}</Typography>
-                        <Typography>First Name: {assessmentData.first_name}</Typography>
-                        <Typography>Last Name: {assessmentData.last_name}</Typography>
-                        <Typography>Variant: {assessmentData.variant}</Typography>
-                        <Typography>Score: {assessmentData.score}</Typography>
-                        <Typography>Created At: {new Date(assessmentData.created_at).toLocaleString()}</Typography>
-                        <Typography>Updated At: {new Date(assessmentData.updated_at).toLocaleString()}</Typography>
-                        <Typography>Answers:</Typography>
+                        <Typography>{t('assessment_id')}: {assessmentData.assessment_id}</Typography>
+                        <Typography>{t('student_id')}: {assessmentData.student_id}</Typography>
+                        <Typography>{t('first_name')}: {assessmentData.first_name}</Typography>
+                        <Typography>{t('last_name')}: {assessmentData.last_name}</Typography>
+                        <Typography>{t('variant')}: {assessmentData.variant}</Typography>
+                        <Typography>{t('score')}: {assessmentData.score}</Typography>
+                        <Typography>{t('created_at')}: {new Date(assessmentData.created_at).toLocaleString()}</Typography>
+                        <Typography>{t('updated_at')}: {new Date(assessmentData.updated_at).toLocaleString()}</Typography>
+                        <Typography>{t('answers')}:</Typography>
                         <Grid container spacing={1}>
                             {renderAnswers(assessmentData.answers, assessmentData.correct_answers)}
                         </Grid>
-                        <Typography>Answer Sheet:</Typography>
+                        <Typography>{t('answer_sheet')}:</Typography>
                         {assessmentData.answer_sheet ? (
                             <img src={`data:image/png;base64,${assessmentData.answer_sheet}`} alt="Answer Sheet" style={{ width: '100%', marginTop: '10px' }} />
                         ) : (
-                            <Typography color="error">No answer sheet available</Typography>
+                            <Typography color="error">{t('no_answer_sheet')}</Typography>
                         )}
                     </CardContent>
                 </Card>
             )}
             <Dialog open={openCamera} onClose={() => setOpenCamera(false)}>
-                <DialogTitle>Take Photo</DialogTitle>
+                <DialogTitle>{t('take_photo')}</DialogTitle>
                 <DialogContent>
                     <Webcam
                         audio={false}
@@ -134,10 +138,10 @@ const AssessmentTab = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenCamera(false)} color="primary">
-                        Cancel
+                        {t('cancel')}
                     </Button>
                     <Button onClick={handleCapture} color="primary">
-                        Capture
+                        {t('capture')}
                     </Button>
                 </DialogActions>
             </Dialog>
