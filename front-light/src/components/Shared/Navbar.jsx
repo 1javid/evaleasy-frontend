@@ -20,8 +20,18 @@ const Navbar = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           SmartEval
         </Typography>
-      </Toolbar>
-    </AppBar>
+        {auth ? (
+          <Button color="inherit" onClick={handleLogout}>
+            {t("logout")}
+          </Button>
+          </Box>
+      ) : (
+      <Button color="inherit" href="/login">
+        {t("login")}
+      </Button>
+        )}
+    </Toolbar>
+    </AppBar >
   );
 };
 
