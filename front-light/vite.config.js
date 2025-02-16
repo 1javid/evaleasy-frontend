@@ -3,7 +3,8 @@ import preact from "@preact/preset-vite";
 
 export default defineConfig({
   plugins: [preact()],
-  server: {
-    port: 3000, // Change if needed
-  },
+  base: "/",  // Ensure correct routing on Vercel
+  build: {
+    outDir: "dist",
+  }
 });
