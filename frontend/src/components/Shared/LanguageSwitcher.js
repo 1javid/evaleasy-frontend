@@ -12,9 +12,24 @@ const LanguageSwitcher = () => {
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-            <Button onClick={() => changeLanguage('en')}>EN</Button>
-            <Button onClick={() => changeLanguage('ru')}>RU</Button>
-            <Button onClick={() => changeLanguage('az')}>AZ</Button>
+            <Button
+                onClick={() => changeLanguage('en')}
+                sx={{ borderRadius: '12px', border: '1px solid #ccc', mx: 1 }}
+            >
+                EN
+            </Button>
+            <Button
+                onClick={() => changeLanguage('ru')}
+                sx={{ borderRadius: '12px', border: '1px solid #ccc', mx: 1 }}
+            >
+                RU
+            </Button>
+            <Button
+                onClick={() => changeLanguage('az')}
+                sx={{ borderRadius: '12px', border: '1px solid #ccc', mx: 1 }}
+            >
+                AZ
+            </Button>
         </Box>
     );
 };

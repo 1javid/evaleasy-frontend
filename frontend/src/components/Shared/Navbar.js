@@ -4,7 +4,6 @@ import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
     const { auth, logout } = useContext(AuthContext);
@@ -22,7 +21,6 @@ const Navbar = () => {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     SmartEval
                 </Typography>
-                <LanguageSwitcher />
                 {auth ? (
                     <Box>
                         {auth.user_type.toLowerCase() === 'admin' && (
