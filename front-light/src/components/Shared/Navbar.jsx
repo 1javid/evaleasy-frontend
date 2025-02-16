@@ -24,14 +24,13 @@ const Navbar = () => {
           <Button color="inherit" onClick={handleLogout}>
             {t("logout")}
           </Button>
-          </Box>
-      ) : (
-      <Button color="inherit" href="/login">
-        {t("login")}
-      </Button>
+        ) : (
+          <Button color="inherit" href="/login">
+            {t("login")}
+          </Button>
         )}
-    </Toolbar>
-    </AppBar >
+      </Toolbar>
+    </AppBar>
   );
 };
 
