@@ -20,32 +20,6 @@ const Navbar = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           SmartEval
         </Typography>
-        {auth ? (
-          <Box>
-            {auth.user_type.toLowerCase() === "admin" && (
-              <Button color="inherit" href="/admin">
-                {t("admin_dashboard")}
-              </Button>
-            )}
-            {auth.user_type.toLowerCase() === "institution representative" && (
-              <Button color="inherit" href="/representative">
-                {t("representative_dashboard")}
-              </Button>
-            )}
-            {auth.user_type.toLowerCase() === "instructor" && (
-              <Button color="inherit" href="/instructor">
-                {t("instructor_dashboard")}
-              </Button>
-            )}
-            <Button color="inherit" onClick={handleLogout}>
-              {t("logout")}
-            </Button>
-          </Box>
-        ) : (
-          <Button color="inherit" href="/login">
-            {t("login")}
-          </Button>
-        )}
       </Toolbar>
     </AppBar>
   );
