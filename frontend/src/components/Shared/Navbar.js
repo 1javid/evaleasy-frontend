@@ -22,26 +22,9 @@ const Navbar = () => {
                     SmartEval
                 </Typography>
                 {auth ? (
-                    <Box>
-                        {auth.user_type.toLowerCase() === 'admin' && (
-                            <Button color="inherit" component={Link} to="/admin">
-                                {t('admin_dashboard')}
-                            </Button>
-                        )}
-                        {auth.user_type.toLowerCase() === 'institution representative' && (
-                            <Button color="inherit" component={Link} to="/representative">
-                                {t('representative_dashboard')}
-                            </Button>
-                        )}
-                        {auth.user_type.toLowerCase() === 'instructor' && (
-                            <Button color="inherit" component={Link} to="/instructor">
-                                {t('instructor_dashboard')}
-                            </Button>
-                        )}
-                        <Button color="inherit" onClick={handleLogout}>
-                            {t('logout')}
-                        </Button>
-                    </Box>
+                    <Button color="inherit" onClick={handleLogout}>
+                        {t('logout')}
+                    </Button>
                 ) : (
                     <Button color="inherit" component={Link} to="/login">
                         {t('login')}

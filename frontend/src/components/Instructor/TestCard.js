@@ -14,7 +14,7 @@ const TestCard = ({ testGroup }) => {
 
     const handleDownloadClick = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:4000/api/test/tests/group/${testGroup.group_id}/download-link/`, {
+            const response = await axios.get(`https://gateway.smarteval.tech/api/test/tests/group/${testGroup.group_id}/download-link/`, {
                 responseType: 'blob'
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));

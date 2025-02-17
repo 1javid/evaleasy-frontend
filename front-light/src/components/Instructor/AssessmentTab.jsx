@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useState, useRef } from "preact/hooks";
-import { Box, Button, Typography, Card, CardContent, Grid, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Box, Button, Typography, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import Webcam from "react-webcam";
@@ -18,7 +18,7 @@ const AssessmentTab = () => {
     setFile(acceptedFiles[0]);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false });
 
   const handleUpload = async () => {
     if (!file) {
@@ -83,11 +83,17 @@ const AssessmentTab = () => {
         {t("use_camera")}
       </Button>
       {error && <Typography color="error" sx={{ mt: 2 }}>{error}</Typography>}
-      
+
       <Dialog open={openCamera} onClose={() => setOpenCamera(false)}>
         <DialogTitle>{t("take_photo")}</DialogTitle>
         <DialogContent>
-          <Webcam audio={false} ref={webcamRef} screenshotFormat="image/png" width="100%" />
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/png"
+            style={{ width: "100%" }}
+            videoConstraints={{ facingMode: { exact: "environment" } }}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenCamera(false)} color="primary">

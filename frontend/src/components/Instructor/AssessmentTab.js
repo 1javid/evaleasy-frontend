@@ -17,7 +17,7 @@ const AssessmentTab = () => {
         setFile(acceptedFiles[0]);
     };
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple: false });
 
     const handleUpload = async () => {
         if (!file) {
@@ -29,7 +29,7 @@ const AssessmentTab = () => {
         formData.append('image', file);
 
         try {
-            const response = await axios.post('http://127.0.0.1:4000/api/assess/submit-assessment/', formData, {
+            const response = await axios.post('https://gateway.smarteval.tech/api/assess/submit-assessment/', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -133,7 +133,8 @@ const AssessmentTab = () => {
                         audio={false}
                         ref={webcamRef}
                         screenshotFormat="image/png"
-                        width="100%"
+                        style={{ width: '100%' }}
+                        videoConstraints={{ facingMode: { exact: 'environment' } }}
                     />
                 </DialogContent>
                 <DialogActions>
