@@ -1,9 +1,17 @@
 import axios from 'axios';
 
-const API_URL = 'https://gateway.smarteval.tech/api/';
+const API_URL = 'https://gateway.smarteval.tech/api/auth/';
 
-export const loginUser = (credentials) => {
-    return axios.post(API_URL + 'auth/login/', credentials);
+export const loginUser = async (credentials) => {
+  try {
+    console.log('Sending login request with credentials:', credentials);
+    const response = await axios.post(`${API_URL}login/`, credentials);
+    console.log('Login response:', response);
+    return response;
+  } catch (error) {
+    console.error('Login error:', error.response ? error.response.data : error.message);
+    throw error;
+  }
 };
 
 export const createInstitution = (institutionData) => {

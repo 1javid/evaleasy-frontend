@@ -33,7 +33,8 @@ const Login = () => {
         route("/login");
       }
     } catch (err) {
-      setError(err.response?.data || "Failed to login.");
+      const errorMessage = err.response?.data?.non_field_errors?.[0] || "Failed to login.";
+      setError(errorMessage);
     }
   };
 
