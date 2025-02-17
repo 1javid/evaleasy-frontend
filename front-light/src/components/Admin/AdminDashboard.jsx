@@ -18,7 +18,12 @@ const AdminDashboard = () => {
         const response = await listInstitutions();
         setInstitutions(response.data);
       } catch (err) {
-        console.error(t("failed_to_fetch_institutions"), err);
+        if (err.response && err.response.status === 404) {
+          // If the error is a 404, set institutions to an empty array
+          setInstitutions([]);
+        } else {
+          console.error(t("failed_to_fetch_institutions"), err);
+        }
       }
     };
 

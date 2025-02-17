@@ -17,7 +17,12 @@ const InstitutionDetails = () => {
         const response = await listRepresentativesByInstitution(id);
         setRepresentatives(response.data);
       } catch (err) {
-        console.error(t("failed_to_fetch_representatives"), err);
+        if (err.response && err.response.status === 404) {
+          // If the error is a 404, set representatives to an empty array
+          setRepresentatives([]);
+        } else {
+          console.error(t("failed_to_fetch_representatives"), err);
+        }
       }
     };
 
