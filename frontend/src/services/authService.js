@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://gateway.smarteval.tech/api/';
+const API_URL = import.meta.env.REACT_APP_API_URL;
 
 export const loginUser = (credentials) => {
     return axios.post(API_URL + 'auth/login/', credentials);
