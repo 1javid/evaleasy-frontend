@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Box, TextField, Button, Typography, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { Box, TextField, Button, Typography, MenuItem, Select, InputLabel, FormControl, IconButton } from '@mui/material';
 import { createTest, listQuestionPoolsBySubject } from '../../services/authService';
 import { AuthContext } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CreateTest = ({ subjectId, onTestCreated }) => {
     const { auth } = useContext(AuthContext);
@@ -51,7 +52,7 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
             setQuestionSelections([{ question_pool: '', positions: '' }]);
             setError(null);
             alert(t('test_created_successfully'));
-            onTestCreated(response.data);
+            onTestCreated(response.data); // Ensure the callback is called with the correct data
         } catch (err) {
             setError(err.response?.data || t('failed_to_create_test'));
         }
@@ -69,6 +70,10 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
 
     const addVariant = () => {
         setVariants([...variants, String.fromCharCode(65 + variants.length)]);
+    };
+
+    const removeVariant = (index) => {
+        setVariants(variants.filter((_, i) => i !== index));
     };
 
     return (
@@ -100,9 +105,14 @@ const CreateTest = ({ subjectId, onTestCreated }) => {
                 {t('variants')}:
             </Typography>
             {variants.map((variant, index) => (
-                <Typography key={index} variant="body2" sx={{ mt: 1 }}>
-                    {variant}
-                </Typography>
+                <Box key={index} sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                    <Typography variant="body2" sx={{ flexGrow: 1 }}>
+                        {variant}
+                    </Typography>
+                    <IconButton onClick={() => removeVariant(index)} color="secondary">
+                        <DeleteIcon />
+                    </IconButton>
+                </Box>
             ))}
             <Button variant="outlined" color="primary" onClick={addVariant} sx={{ mt: 2 }}>
                 {t('add_variant')}

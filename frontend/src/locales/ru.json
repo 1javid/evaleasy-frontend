@@ -89,5 +89,7 @@
     "add_question_selection": "Добавить выбор вопросов",
     "failed_to_download_tests": "Не удалось скачать тесты.",
     "download_test_variants": "Скачать варианты тестов",
-    "view_variant": "Просмотреть вариант"
+    "view_variant": "Просмотреть вариант",
+    "group_id": "ID группы",
+    "assessment_id": "ID оценки"
 }

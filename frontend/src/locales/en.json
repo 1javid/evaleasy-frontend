@@ -89,5 +89,7 @@
     "add_question_selection": "Add Question Selection",
     "failed_to_download_tests": "Failed to download tests.",
     "download_test_variants": "Download Test Variants",
-    "view_variant": "View Variant"
+    "view_variant": "View Variant",
+    "group_id": "Group ID",
+    "assessment_id": "Assessment ID"
 }

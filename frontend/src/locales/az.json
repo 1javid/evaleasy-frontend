@@ -89,5 +89,7 @@
     "add_question_selection": "Sual seçimi əlavə et",
     "failed_to_download_tests": "Testləri yükləmək alınmadı.",
     "download_test_variants": "Test variantlarını yüklə",
-    "view_variant": "Variantı göstər"
+    "view_variant": "Variantı göstər",
+    "group_id": "Qrup ID",
+    "assessment_id": "Qiymətləndirmə ID"
 }
