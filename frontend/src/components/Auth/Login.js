@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { loginUser } from '../../services/authService';
@@ -38,31 +38,36 @@ const Login = () => {
     };
 
     return (
-        <Box component="form" onSubmit={handleLogin} sx={{ mt: 2, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
-            <LanguageSwitcher />
-            {error && <Typography color="error">{error}</Typography>}
-            <TextField
-                label={t('email')}
-                type="email"
-                fullWidth
-                margin="normal"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <TextField
-                label={t('password')}
-                type="password"
-                fullWidth
-                margin="normal"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <Button variant="contained" color="primary" type="submit" sx={{ mt: 2 }}>
-                {t('login')}
-            </Button>
-        </Box>
+        <Container maxWidth="sm">
+            <Box component="form" onSubmit={handleLogin} sx={{ mt: 8, p: 4, border: '1px solid #ccc', borderRadius: 2 }}>
+                <LanguageSwitcher />
+                <Typography variant="h4" sx={{ mb: 2, textAlign: 'left' }}>{t('login')}</Typography>
+                {error && <Typography color="error">{error}</Typography>}
+                <TextField
+                    label={t('email')}
+                    type="email"
+                    fullWidth
+                    margin="normal"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <TextField
+                    label={t('password')}
+                    type="password"
+                    fullWidth
+                    margin="normal"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                    <Button variant="contained" color="primary" type="submit">
+                        {t('login')}
+                    </Button>
+                </Box>
+            </Box>
+        </Container>
     );
 };
 
