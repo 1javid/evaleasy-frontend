@@ -28,12 +28,13 @@ const AiQuestionGenerator = ({ open, onClose, questionPoolId, onQuestionsGenerat
     const [difficulty, setDifficulty] = useState('Medium');
     const [numQuestions, setNumQuestions] = useState(3);
     const [numAnswers, setNumAnswers] = useState(4);
+    const [language, setLanguage] = useState('en');
     const [feedback, setFeedback] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [generatedQuestions, setGeneratedQuestions] = useState(null);
 
-    const handleGenerateQuestions = async () => {
+    const handleGenerateQuestions = () => {
         setLoading(true);
         setError(null);
 
@@ -43,47 +44,37 @@ const AiQuestionGenerator = ({ open, onClose, questionPoolId, onQuestionsGenerat
             difficulty,
             num_questions: Number(numQuestions),
             num_answers: Number(numAnswers),
+            language,
             feedback: feedback || null
         };
 
-        console.log('Sending request payload:', requestPayload); // Debugging
+        console.log('Sending request payload:', requestPayload);
 
-        try {
-            const response = await axios.post(
-                'https://gateway.smarteval.tech/api/ai/generate/',
-                requestPayload,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-
-            console.log('Received response:', response.data); // Debugging
-            setGeneratedQuestions(response.data);
-            setLoading(false);
-
-            if (feedback) setFeedback('');
-        } catch (err) {
-            console.error('API request failed:', err.response?.data || err.message);
-
-            let errorMessage = t('failed_to_generate_questions');
-            if (err.response?.data) {
-                if (typeof err.response.data === 'object') {
-                    errorMessage = err.response.data.error || errorMessage;
-                    if (err.response.data.details) {
-                        errorMessage += `: ${err.response.data.details}`;
-                    }
-                } else {
-                    errorMessage = err.response.data;
+        axios.post(
+            'https://gateway.smarteval.tech/api/ai/generate/',
+            requestPayload,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
             }
-
-            setError(errorMessage);
-            setLoading(false);
-        }
+        )
+            .then(response => {
+                console.log('Received response:', response.data);
+                setGeneratedQuestions(response.data);
+                if (feedback) setFeedback('');
+            })
+            .catch(err => {
+                console.log('API request failed - raw error:', err);
+                console.log('Status:', err.response?.status);
+                console.log('Data:', err.response?.data);
+                console.log('Headers:', err.response?.headers);
+                setError('Request failed, see console for details');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
-
 
     const handleAddToQuestionPool = () => {
         if (generatedQuestions && generatedQuestions.questions) {
@@ -103,7 +94,7 @@ const AiQuestionGenerator = ({ open, onClose, questionPoolId, onQuestionsGenerat
                     {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
 
                     <TextField
-                        label={t('subject')}
+                        label={t('context')}
                         fullWidth
                         margin="normal"
                         value={subject}
@@ -112,14 +103,28 @@ const AiQuestionGenerator = ({ open, onClose, questionPoolId, onQuestionsGenerat
                     />
 
                     <FormControl fullWidth margin="normal">
-                        <InputLabel>{t('difficulty')}</InputLabel>
+                        <InputLabel shrink>{t('difficulty')}</InputLabel>
                         <Select
                             value={difficulty}
                             onChange={(e) => setDifficulty(e.target.value)}
+                            label={t('difficulty')}
                         >
                             <MenuItem value="Easy">{t('easy')}</MenuItem>
                             <MenuItem value="Medium">{t('medium')}</MenuItem>
                             <MenuItem value="Hard">{t('hard')}</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel shrink>{t('language')}</InputLabel>
+                        <Select
+                            value={language}
+                            onChange={(e) => setLanguage(e.target.value)}
+                            label={t('language')}
+                        >
+                            <MenuItem value="en">{t('english')}</MenuItem>
+                            <MenuItem value="ru">{t('russian')}</MenuItem>
+                            <MenuItem value="az">{t('azerbaijani')}</MenuItem>
                         </Select>
                     </FormControl>
 
