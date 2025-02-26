@@ -50,14 +50,24 @@ const CreateQuestion = ({ questionPoolId, onQuestionCreated }) => {
     };
 
     const handleAiQuestionsGenerated = async (aiGeneratedQuestions) => {
-        // Create multiple questions in sequence
         try {
             for (const question of aiGeneratedQuestions) {
-                const response = await createQuestion(question);
+                const response = await createQuestion({
+                    question_pool: questionPoolId,
+                    text: question.text,
+                    default_score: question.default_score,
+                    answers: question.answers
+                });
                 onQuestionCreated(response.data);
             }
             alert(t('ai_questions_added_successfully'));
         } catch (err) {
+            console.error('Failed to add AI-generated questions - raw error:', err);
+            if (err.response) {
+                console.error('Status:', err.response.status);
+                console.error('Data:', err.response.data);
+                console.error('Headers:', err.response.headers);
+            }
             setError(t('failed_to_add_ai_questions'));
         }
     };

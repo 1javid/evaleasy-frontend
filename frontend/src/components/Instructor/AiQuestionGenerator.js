@@ -78,11 +78,36 @@ const AiQuestionGenerator = ({ open, onClose, questionPoolId, onQuestionsGenerat
 
     const handleAddToQuestionPool = () => {
         if (generatedQuestions && generatedQuestions.questions) {
-            onQuestionsGenerated(generatedQuestions.questions.map(q => ({
-                ...q,
-                question_pool: questionPoolId
-            })));
-            onClose();
+            const requestPayload = {
+                questions: generatedQuestions.questions.map(q => ({
+                    ...q,
+                    question_pool: questionPoolId
+                }))
+            };
+
+            axios.post(
+                `https://gateway.smarteval.tech/api/test/questions/bulk/${questionPoolId}/`,
+                requestPayload,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            )
+                .then(response => {
+                    console.log('Questions added successfully:', response.data);
+                    onQuestionsGenerated(response.data.questions);
+                    onClose();
+                })
+                .catch(err => {
+                    console.error('Failed to add questions - raw error:', err);
+                    if (err.response) {
+                        console.error('Status:', err.response.status);
+                        console.error('Data:', err.response.data);
+                        console.error('Headers:', err.response.headers);
+                    }
+                    setError('Failed to add AI-generated questions. Please check the console for more details.');
+                });
         }
     };
 
