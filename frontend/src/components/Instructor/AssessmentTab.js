@@ -47,9 +47,25 @@ const AssessmentTab = () => {
 
     const handleCapture = () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        const blob = dataURItoBlob(imageSrc);
-        setFile(new File([blob], 'captured_image.png', { type: 'image/png' }));
-        setOpenCamera(false);
+        resizeImage(imageSrc, 800, 600, (resizedImage) => {
+            const blob = dataURItoBlob(resizedImage);
+            setFile(new File([blob], 'captured_image.png', { type: 'image/png' }));
+            setOpenCamera(false);
+        });
+    };
+
+    const resizeImage = (dataURI, width, height, callback) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            const resizedDataURI = canvas.toDataURL('image/png');
+            callback(resizedDataURI);
+        };
+        img.src = dataURI;
     };
 
     const dataURItoBlob = (dataURI) => {
