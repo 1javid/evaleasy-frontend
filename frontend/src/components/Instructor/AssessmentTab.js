@@ -47,7 +47,7 @@ const AssessmentTab = () => {
 
     const handleCapture = () => {
         const imageSrc = webcamRef.current.getScreenshot();
-        resizeImage(imageSrc, 800, 600, (resizedImage) => {
+        resizeImage(imageSrc, 800, (resizedImage) => {
             const blob = dataURItoBlob(resizedImage);
             setFile(new File([blob], 'captured_image.png', { type: 'image/png' }));
             setOpenCamera(false);
