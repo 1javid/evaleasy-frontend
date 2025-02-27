@@ -54,14 +54,25 @@ const AssessmentTab = () => {
         });
     };
 
-    const resizeImage = (dataURI, width, height, callback) => {
+    const resizeImage = (dataURI, maxSize = 800, callback) => {
         const img = new Image();
         img.onload = () => {
             const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
+            let newWidth, newHeight;
+
+            // Calculate dimensions to maintain aspect ratio
+            if (img.width > img.height) {
+                newWidth = maxSize;
+                newHeight = (img.height / img.width) * maxSize;
+            } else {
+                newHeight = maxSize;
+                newWidth = (img.width / img.height) * maxSize;
+            }
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
+            ctx.drawImage(img, 0, 0, newWidth, newHeight);
             const resizedDataURI = canvas.toDataURL('image/png');
             callback(resizedDataURI);
         };
