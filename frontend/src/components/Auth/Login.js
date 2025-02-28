@@ -33,7 +33,8 @@ const Login = () => {
                 navigate('/login');
             }
         } catch (err) {
-            setError(err.response?.data || 'Failed to login.');
+            const errorMessage = err.response?.data?.non_field_errors?.[0] || t('failed_to_login');
+            setError(errorMessage);
         }
     };
 
